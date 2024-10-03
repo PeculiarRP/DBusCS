@@ -1,9 +1,21 @@
-﻿namespace DBusCS.ViewModels
+﻿using ReactiveUI;
+using System.ComponentModel;
+
+namespace DBusCS.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
-#pragma warning disable CA1822 // Mark members as static
-        public string Greeting => "Welcome to Avalonia!";
-#pragma warning restore CA1822 // Mark members as static
+
+        private ViewModelBase[] pages = {
+            new AuthPageViewModel()
+        };
+        private ViewModelBase _currentPage;
+        public ViewModelBase CurrentPage { 
+            get => _currentPage; 
+            set => this.RaiseAndSetIfChanged(ref _currentPage, value); }
+
+        public MainWindowViewModel() {
+            CurrentPage = pages[0];
+        }   
     }
 }
