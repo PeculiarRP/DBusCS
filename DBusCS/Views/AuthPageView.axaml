@@ -3,10 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:DBusCS.ViewModels"
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="250"
              x:DataType="vm:AuthPageViewModel"
-			 x:Class="DBusCS.Views.AuthPageView">
-	<StackPanel>
-		<TextBox Text="Пара па па па!"/>
+			 x:Class="DBusCS.Views.AuthPageView"
+			 Width="450" Height="250">
+	<StackPanel Margin="20" VerticalAlignment="Center">
+		<TextBox Text="Авторизация" TextAlignment="Center" IsReadOnly="True" Margin="10"/>
+		<TextBox Text="{Binding Login}" Watermark="Введите логин" Margin="10" BorderBrush="{Binding LoginBrush}"/>
+		<TextBox Text="{Binding Password}" Watermark="Введите пароль" Margin="10" BorderBrush="{Binding PassBrush}"/>
+		<Button Command="{Binding AuthUser}" Content="Авторизация" Margin="10" HorizontalAlignment="Right"/>
 	</StackPanel>
 </UserControl>
