@@ -25,10 +25,19 @@ namespace DBusCS.utils
             get => _surname; 
             set => _surname = value; 
         }
-        public string studentClass 
+        public string StudentClass 
         { 
             get => _studentClass; 
             set => _studentClass = value; 
+        }
+
+        public Student(Guid id, string name, string surname, string studentClass)
+        {
+            Id = id;
+            Name = name;
+            Surname = surname;
+            StudentClass = studentClass;
+           
         }
     }
 }

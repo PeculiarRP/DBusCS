@@ -16,7 +16,7 @@ namespace DBusCS.ViewModels
     public class AuthPageViewModel : ViewModelBase
     {
         public delegate void AuthDelegate(string id);
-        public event AuthDelegate userAith;
+        public event AuthDelegate userAuth;
         private string _login;
         public string Login
         {
@@ -46,7 +46,7 @@ namespace DBusCS.ViewModels
             string id = await DBus.AuthUser(Login, Password);
             if (id != "error")
             {
-                userAith?.Invoke(id);
+                userAuth?.Invoke(id);
             }
             else
             {

@@ -7,6 +7,10 @@
              x:DataType="vm:AuthPageViewModel"
 			 x:Class="DBusCS.Views.AuthPageView"
 			 Width="450" Height="250">
+	<Design.DataContext>
+		<vm:AuthPageViewModel/>
+	</Design.DataContext>
+	
 	<StackPanel Margin="20" VerticalAlignment="Center">
 		<TextBox Text="Авторизация" TextAlignment="Center" IsReadOnly="True" Margin="10"/>
 		<TextBox Text="{Binding Login}" Watermark="Введите логин" Margin="10" BorderBrush="{Binding LoginBrush}"/>
