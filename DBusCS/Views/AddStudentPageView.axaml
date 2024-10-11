@@ -12,13 +12,13 @@
 	</Design.DataContext>
 	<StackPanel Margin="20" VerticalAlignment="Center">
 		<TextBlock Text="Имя студента" Margin="10"/>
-		<TextBox Text="{Binding Name}" Watermark="Введите имя студента" Margin="5"/>
+		<TextBox Text="{Binding Name}" Watermark="Введите имя студента" Margin="5" BorderBrush="{Binding NameBrush}"/>
 		<TextBlock Text="Фамилия студента" Margin="10"/>
-		<TextBox Text="{Binding Surname}" Watermark="Введите фамилию студента" Margin="5"/>
+		<TextBox Text="{Binding Surname}" Watermark="Введите фамилию студента" Margin="5" BorderBrush="{Binding SurnameBrush}"/>
 		<TextBlock Text="Класс студента" Margin="10"/>
-		<TextBox Text="{Binding StudentClass}" Watermark="Введите класс студента (номер + буква)" Margin="5"/>
-		<Button Width="150" HorizontalAlignment="Right" Margin="0 10" Command="{Binding AddStudentEv}">
-			<TextBox Text="Добавить" TextAlignment="Center"/>
+		<TextBox Text="{Binding StudentClass}" Watermark="Введите класс студента (номер + буква)" Margin="5" BorderBrush="{Binding StudentClassBrush}"/>
+		<Button Width="150" HorizontalAlignment="Right" Command="{Binding AddStudentEv}" Margin="10">
+			<TextBlock Text="Добавить" TextAlignment="Center"/>
 		</Button>
 	</StackPanel>
 </UserControl>

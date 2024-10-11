@@ -13,14 +13,17 @@ namespace DBusCS.ViewModels
 {
     public class AddStudentPageViewModel: ViewModelBase
     {
+        public delegate void ReturnBack ();
+        public event ReturnBack ReturnBackToJournal;
+
         private string _name;
         public string Name 
         {
             get => _name;
             set 
             {
-                if (_name != "") NameBrush = new SolidColorBrush(Colors.Black);
-                NameBrush = new SolidColorBrush(Colors.Red);
+                if (value != "") NameBrush = new SolidColorBrush(Colors.Black);
+                else NameBrush = new SolidColorBrush(Colors.Red);
                 this.RaiseAndSetIfChanged(ref _name, value); 
             }
         }
@@ -30,8 +33,8 @@ namespace DBusCS.ViewModels
             get => _surname;
             set
             {
-                if (_surname != "") NameBrush = new SolidColorBrush(Colors.Black);
-                NameBrush = new SolidColorBrush(Colors.Red);
+                if (value != "") SurnameBrush = new SolidColorBrush(Colors.Black);
+                else SurnameBrush = new SolidColorBrush(Colors.Red);
                 this.RaiseAndSetIfChanged(ref _surname, value);
             }
         }
@@ -41,19 +44,25 @@ namespace DBusCS.ViewModels
             get => _studentClass;
             set
             {
-                if (_name != "") NameBrush = new SolidColorBrush(Colors.Black);
-                else 
-                NameBrush = new SolidColorBrush(Colors.Red);
+                if (value.Length == 2 && Char.IsNumber(value[0]) && Char.IsLetter(value[1])) StudentClassBrush = new SolidColorBrush(Colors.Black);
+                else if (value.Length == 3 && Char.IsNumber(value[0]) && Char.IsNumber(value[1]) && Char.IsLetter(value[2])) StudentClassBrush = new SolidColorBrush(Colors.Black);
+                else StudentClassBrush = new SolidColorBrush(Colors.Red);
                 this.RaiseAndSetIfChanged(ref _studentClass, value); 
             }
         }
 
         public ICommand AddStudentEv => new RelayCommand(addStudent);
+        public ICommand ReturnBackEv => new RelayCommand(retBack);
 
-        private void addStudent()
+        private void retBack()
         {
+            ReturnBackToJournal?.Invoke();
+        }
 
-            DBus.AddStudent(Name);
+        private async void addStudent()
+        {
+            await DBus.AddStudent(Name, Surname, StudentClass);
+            ReturnBackToJournal?.Invoke();
         }
 
         private Brush _nameBrush = new SolidColorBrush(Colors.Red);

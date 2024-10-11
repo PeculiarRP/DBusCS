@@ -14,12 +14,15 @@ namespace DBusCS.ViewModels
 {
     public class JournalPageViewModel: ViewModelBase
     {
+        public delegate void AddStudentDel ();
+        public event AddStudentDel OnAddStudent;
+
         private string _id;
         public string ID 
         {
             get => _id;
             set {
-                GetStudent();
+                RefreshPage();
                 this.RaiseAndSetIfChanged(ref _id, value);
             }
         }
@@ -31,10 +34,15 @@ namespace DBusCS.ViewModels
             set => this.RaiseAndSetIfChanged(ref _students, value);
         }
 
-        public ICommand _addStudent => new RelayCommand(AddStudent);
-        public ICommand _deleteStudent => new RelayCommand(AddStudent); 
+        public ICommand AddStudent => new RelayCommand(AddStudentEv);
+        public ICommand DeleteStudent => new RelayCommand(AddStudentEv); 
 
-        private async void GetStudent()
+        public void RefreshPage()
+        {
+            _GetStudent();
+        }
+
+        private void _GetStudent()
         {
             var studList = Task.Run(async () => await DBus.GetSudent()).Result;
             List<Student> students = new List<Student>();
@@ -46,9 +54,9 @@ namespace DBusCS.ViewModels
             Students = new ObservableCollection<Student>(students);
         }
 
-        private async void AddStudent()
+        private async void AddStudentEv()
         {
-            
+            OnAddStudent?.Invoke();
         }
 
         public JournalPageViewModel() { }   

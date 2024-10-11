@@ -18,10 +18,10 @@
 		</Grid.RowDefinitions>
 		<TextBox Text="{Binding ID}" IsReadOnly="True" TextAlignment="Center" Margin="10"/>
 		<WrapPanel Grid.Row="1" HorizontalAlignment="Center" Margin="5">
-			<Button Margin="15 0" Width="150" Command="{Binding}">
+			<Button Margin="15 0" Width="150" Command="{Binding AddStudent}">
 				<TextBlock Text="Добавить" TextAlignment="Center"/>
 			</Button>
-			<Button Margin="15 0" Width="150" Command="{Binding}">
+			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudent}">
 				<TextBlock Text="Удалить" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
