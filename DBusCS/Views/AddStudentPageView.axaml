@@ -17,8 +17,13 @@
 		<TextBox Text="{Binding Surname}" Watermark="Введите фамилию студента" Margin="5" BorderBrush="{Binding SurnameBrush}"/>
 		<TextBlock Text="Класс студента" Margin="10"/>
 		<TextBox Text="{Binding StudentClass}" Watermark="Введите класс студента (номер + буква)" Margin="5" BorderBrush="{Binding StudentClassBrush}"/>
-		<Button Width="150" HorizontalAlignment="Right" Command="{Binding AddStudentEv}" Margin="10">
-			<TextBlock Text="Добавить" TextAlignment="Center"/>
-		</Button>
+		<WrapPanel HorizontalAlignment="Right">
+			<Button Width="150" Command="{Binding ReturnBackEv}" Margin="10">
+				<TextBlock Text="Отмена" TextAlignment="Center"/>
+			</Button>
+			<Button Width="150" Command="{Binding AddStudentEv}" Margin="10">
+				<TextBlock Text="Добавить" TextAlignment="Center"/>
+			</Button>
+		</WrapPanel>
 	</StackPanel>
 </UserControl>

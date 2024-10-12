@@ -5,8 +5,7 @@
              xmlns:vm="using:DBusCS.ViewModels"
 			 mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="250"
              x:DataType="vm:AuthPageViewModel"
-			 x:Class="DBusCS.Views.AuthPageView"
-			 Width="450" Height="250">
+			 x:Class="DBusCS.Views.AuthPageView">
 	<Design.DataContext>
 		<vm:AuthPageViewModel/>
 	</Design.DataContext>

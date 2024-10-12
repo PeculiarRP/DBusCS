@@ -13,8 +13,8 @@ namespace DBusCS.ViewModels
 {
     public class AddStudentPageViewModel: ViewModelBase
     {
-        public delegate void ReturnBack ();
-        public event ReturnBack ReturnBackToJournal;
+        public delegate void ReturnBackDelegate ();
+        public event ReturnBackDelegate OnReturnBackToJournal;
 
         private string _name;
         public string Name 
@@ -44,25 +44,36 @@ namespace DBusCS.ViewModels
             get => _studentClass;
             set
             {
-                if (value.Length == 2 && Char.IsNumber(value[0]) && Char.IsLetter(value[1])) StudentClassBrush = new SolidColorBrush(Colors.Black);
-                else if (value.Length == 3 && Char.IsNumber(value[0]) && Char.IsNumber(value[1]) && Char.IsLetter(value[2])) StudentClassBrush = new SolidColorBrush(Colors.Black);
+                if (_RightClass(value)) StudentClassBrush = new SolidColorBrush(Colors.Black);
                 else StudentClassBrush = new SolidColorBrush(Colors.Red);
                 this.RaiseAndSetIfChanged(ref _studentClass, value); 
             }
         }
 
-        public ICommand AddStudentEv => new RelayCommand(addStudent);
-        public ICommand ReturnBackEv => new RelayCommand(retBack);
+        public ICommand AddStudentEv => new RelayCommand(_AddStudent);
+        public ICommand ReturnBackEv => new RelayCommand(_RetBack);
 
-        private void retBack()
+        private bool _RightClass(string value)
         {
-            ReturnBackToJournal?.Invoke();
+            if (value == null) return false;
+            else if (value.Length == 2 && Char.IsNumber(value[0]) && Char.IsLetter(value[1])) return true;
+            else if (value.Length == 3 && Char.IsNumber(value[0]) && Char.IsNumber(value[1]) && Char.IsLetter(value[2])) return true;
+            else return false;
         }
 
-        private async void addStudent()
+        private void _RetBack()
         {
-            await DBus.AddStudent(Name, Surname, StudentClass);
-            ReturnBackToJournal?.Invoke();
+            OnReturnBackToJournal?.Invoke();
+        }
+
+        private async void _AddStudent()
+        {
+            if (Name != "" && Surname != "" && _RightClass(StudentClass))
+            {
+                await DBus.AddStudent(Name, Surname, StudentClass);
+                _RetBack();
+            }
+            
         }
 
         private Brush _nameBrush = new SolidColorBrush(Colors.Red);

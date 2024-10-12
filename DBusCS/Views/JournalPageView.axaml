@@ -3,10 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:DBusCS.ViewModels"
-			 mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="600"
+			 mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
 			 x:DataType="vm:JournalPageViewModel"
-             x:Class="DBusCS.Views.JournalPageView"
-			 Height="600" Width="450">
+             x:Class="DBusCS.Views.JournalPageView">
 	<Design.DataContext>
 		<vm:JournalPageViewModel/>
 	</Design.DataContext>
@@ -18,22 +17,23 @@
 		</Grid.RowDefinitions>
 		<TextBox Text="{Binding ID}" IsReadOnly="True" TextAlignment="Center" Margin="10"/>
 		<WrapPanel Grid.Row="1" HorizontalAlignment="Center" Margin="5">
-			<Button Margin="15 0" Width="150" Command="{Binding AddStudent}">
+			<Button Margin="15 0" Width="150" Command="{Binding AddStudentEv}">
 				<TextBlock Text="Добавить" TextAlignment="Center"/>
 			</Button>
-			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudent}">
+			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudentEv}">
 				<TextBlock Text="Удалить" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
-		<DataGrid Grid.Row="2" Margin="10" 
-				  GridLinesVisibility="All" 
-				  BorderThickness="1" 
+		<DataGrid Grid.Row="2" Margin="10"
+				  GridLinesVisibility="All"
+				  BorderThickness="1"
 				  BorderBrush="Gray"
-				  ItemsSource="{Binding Students}">
+				  ItemsSource="{Binding Students}"
+				  SelectedItem="{Binding SelectedStudent}">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Имя студента" Binding="{Binding Name}"/>
-				<DataGridTextColumn Header="Фамилия студента" Binding="{Binding Surname}"/>
-				<DataGridTextColumn Header="Класс студента" Binding="{Binding StudentClass}"/>
+				<DataGridTextColumn Header="Имя студента" Binding="{Binding Name}" Width=".3*"/>
+				<DataGridTextColumn Header="Фамилия студента" Binding="{Binding Surname}" Width=".3*"/>
+				<DataGridTextColumn Header="Класс студента" Binding="{Binding StudentClass}" Width=".3*"/>
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>

@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:DBusCS.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DBusCS.Views.DeleteStudentPageView"
+			 x:DataType="vm:DeleteStudentPageViewModel">
+	<Design.DataContext>
+		<vm:DeleteStudentPageViewModel/>
+	</Design.DataContext>
+	<StackPanel VerticalAlignment="Center" Margin="20">
+		<TextBlock Text="{Binding PageText}" Margin="10" TextWrapping="Wrap"/>
+		<WrapPanel HorizontalAlignment="Right">
+			<Button Command="{Binding BackToJournal}" Width="150" Margin="10">
+				<TextBlock Text="Отмена" TextAlignment="Center"/>
+			</Button>
+			<Button Command="{Binding DeleteStudent}" Width="150" Margin="10">
+				<TextBlock Text="Удалить" TextAlignment="Center"/>
+			</Button>
+		</WrapPanel>
+	</StackPanel>
+</UserControl>

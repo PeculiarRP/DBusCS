@@ -14,8 +14,11 @@ namespace DBusCS.ViewModels
 {
     public class JournalPageViewModel: ViewModelBase
     {
-        public delegate void AddStudentDel ();
-        public event AddStudentDel OnAddStudent;
+        public delegate void AddStudentDelegate ();
+        public event AddStudentDelegate OnAddStudent;
+
+        public delegate void DeleteStudentDelegate (Student student);
+        public event DeleteStudentDelegate OnDeleteStudent;
 
         private string _id;
         public string ID 
@@ -34,8 +37,15 @@ namespace DBusCS.ViewModels
             set => this.RaiseAndSetIfChanged(ref _students, value);
         }
 
-        public ICommand AddStudent => new RelayCommand(AddStudentEv);
-        public ICommand DeleteStudent => new RelayCommand(AddStudentEv); 
+        private Student _selectedStudent;
+        public Student SelectedStudent
+        {
+            get => _selectedStudent;
+            set => this.RaiseAndSetIfChanged(ref _selectedStudent, value);
+        }
+
+        public ICommand AddStudentEv => new RelayCommand(_AddStudent);
+        public ICommand DeleteStudentEv => new RelayCommand(_DeleteStudent); 
 
         public void RefreshPage()
         {
@@ -54,7 +64,15 @@ namespace DBusCS.ViewModels
             Students = new ObservableCollection<Student>(students);
         }
 
-        private async void AddStudentEv()
+        private void _DeleteStudent() 
+        {
+            if (SelectedStudent != null)
+            {
+                OnDeleteStudent?.Invoke(SelectedStudent);
+            }
+        }
+
+        private void _AddStudent()
         {
             OnAddStudent?.Invoke();
         }

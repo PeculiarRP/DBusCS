@@ -31,6 +31,11 @@ namespace DBusCS.utils
             set => _studentClass = value; 
         }
 
+        public override string ToString()
+        {
+            return Name + " " + Surname + " из класса " + StudentClass + " с номером " + Id;
+        }
+
         public Student(Guid id, string name, string surname, string studentClass)
         {
             Id = id;

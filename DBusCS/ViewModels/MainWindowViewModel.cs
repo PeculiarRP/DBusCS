@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using DBusCS.utils;
 using System.ComponentModel;
 
 namespace DBusCS.ViewModels
@@ -21,10 +22,17 @@ namespace DBusCS.ViewModels
             ((JournalPageViewModel)pages[1]).RefreshPage();
         }
 
+        private void _DeleteStudent(Student student)
+        {
+            CurrentPage = pages[3];
+            ((DeleteStudentPageViewModel)pages[3]).UploadData(student);
+        }
+
         private ViewModelBase[] pages = {
             new AuthPageViewModel(),
             new JournalPageViewModel(),
-            new AddStudentPageViewModel()
+            new AddStudentPageViewModel(),
+            new DeleteStudentPageViewModel()
         };
 
         private ViewModelBase _currentPage;
@@ -35,9 +43,11 @@ namespace DBusCS.ViewModels
 
         public MainWindowViewModel() {
             CurrentPage = pages[0];
-            ((AuthPageViewModel)pages[0]).userAuth += _AuthComl;
+            ((AuthPageViewModel)pages[0]).OnUserAuth += _AuthComl;
             ((JournalPageViewModel)pages[1]).OnAddStudent += _AddStudent;
-            ((AddStudentPageViewModel)pages[2]).ReturnBackToJournal += _BackToJournal;
+            ((JournalPageViewModel)pages[1]).OnDeleteStudent += _DeleteStudent;
+            ((AddStudentPageViewModel)pages[2]).OnReturnBackToJournal += _BackToJournal;
+            ((DeleteStudentPageViewModel)pages[3]).OnReturnBackToJournal += _BackToJournal;
         }   
     }
 }
