@@ -11,9 +11,13 @@ namespace DBusCS.utils
     public interface IJournalServer: IDBusObject
     {
         Task<string> AuthUserAsync(string login, string password);
+        Task<string> AddUserAsync(string login, string password, string access);
         Task<string[]> GetStudentsAsync();
+        Task<string> UpdateStudentByIdAsync();
         Task DeleteStudentAsync(string id);
         Task AddStudentAsync(string name, string surname, string classStudent);
+        Task<string[]> GetAllSubjectAsync();
+
         Task terminateServerAsync();
     }
 }

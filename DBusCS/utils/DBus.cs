@@ -36,6 +36,12 @@ namespace DBusCS.utils
             await _journalServer.AddStudentAsync(name, surname, studentClass);
         }
 
+        public static async Task<string[]> GetAllSubject()
+        {
+            await ConnectCreate();
+            return await _journalServer.GetAllSubjectAsync();
+        }
+        
         public static async Task ConnectCreate()
         {
             if (_journalServer == null)
