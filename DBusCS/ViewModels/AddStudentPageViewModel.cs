@@ -59,7 +59,7 @@ namespace DBusCS.ViewModels
             else if (value.Length == 2 && Char.IsNumber(value[0]) && Char.IsLetter(value[1])) return true;
             else if (value.Length == 3 && Char.IsNumber(value[0]) && Char.IsNumber(value[1]) && Char.IsLetter(value[2])) return true;
             else return false;
-        }
+        }   
 
         private void _RetBack()
         {
