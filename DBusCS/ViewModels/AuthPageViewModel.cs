@@ -43,10 +43,11 @@ namespace DBusCS.ViewModels
 
         private async void authUser()
         {
-            string id = await DBus.AuthUser(Login, Password);
-            if (id != "error")
+            string req = await DBus.AuthUser(Login, Password);
+            if (req != "error")
             {
-                OnUserAuth?.Invoke(id);
+                var splReq = req.Split(":");
+                OnUserAuth?.Invoke(splReq[0]);
             }
             else
             {
