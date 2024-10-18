@@ -14,6 +14,9 @@
 		<TextBox Text="Авторизация" TextAlignment="Center" IsReadOnly="True" Margin="10"/>
 		<TextBox Text="{Binding Login}" Watermark="Введите логин" Margin="10" BorderBrush="{Binding LoginBrush}"/>
 		<TextBox Text="{Binding Password}" Watermark="Введите пароль" Margin="10" BorderBrush="{Binding PassBrush}"/>
-		<Button Command="{Binding AuthUser}" Content="Авторизация" Margin="10" HorizontalAlignment="Right"/>
+		<WrapPanel HorizontalAlignment="Right">
+			<Button Command="{Binding RegUser}" Content="Регистрация" Margin="10" HorizontalAlignment="Right"/>
+			<Button Command="{Binding AuthUser}" Content="Авторизация" Margin="10" HorizontalAlignment="Right"/>
+		</WrapPanel>
 	</StackPanel>
 </UserControl>

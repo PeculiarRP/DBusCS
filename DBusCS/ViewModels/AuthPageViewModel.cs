@@ -15,8 +15,12 @@ namespace DBusCS.ViewModels
 {
     public class AuthPageViewModel : ViewModelBase
     {
-        public delegate void AuthDelegate(string id);
+        public delegate void AuthDelegate(User user);
         public event AuthDelegate OnUserAuth;
+
+        public delegate void RegDelegate();
+        public event RegDelegate OnUserReg;
+
         private string _login;
         public string Login
         {
@@ -39,20 +43,28 @@ namespace DBusCS.ViewModels
             }
         }
 
-        public ICommand AuthUser => new RelayCommand(authUser);
+        public ICommand AuthUser => new RelayCommand(_AuthUser);
+        public ICommand RegUser => new RelayCommand(_RegUser);
 
-        private async void authUser()
+        private async void _AuthUser()
         {
-            string id = await DBus.AuthUser(Login, Password);
-            if (id != "error")
+            string req = await DBus.AuthUser(Login, Password);
+            if (req != "error")
             {
-                OnUserAuth?.Invoke(id);
+                var splitReq = req.Split(":");
+                User user = new User(Guid.Parse(splitReq[0]), splitReq[1], splitReq[2]);
+                OnUserAuth?.Invoke(user);
             }
             else
             {
                 Login = "";
                 Password = "";
             }
+        }
+
+        private void _RegUser()
+        {
+            OnUserReg?.Invoke();
         }
 
         private Brush _loginBrush;

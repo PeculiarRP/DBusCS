@@ -11,44 +11,35 @@
 	</Design.DataContext>
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="0.18*"/>
 			<RowDefinition Height="0.1*"/>
 			<RowDefinition Height="0.1*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<TextBox Text="{Binding ID}" IsReadOnly="True" TextAlignment="Center" Margin="10"/>
-		<WrapPanel Grid.Row="1" HorizontalAlignment="Center" Margin="5">
-			<ComboBox ItemsSource="{Binding BoxItems}" SelectedItem="{Binding SelectedItem}" Margin="15 0" Width="150"></ComboBox>
+		<TextBox Text="{Binding ID}" IsReadOnly="True" TextAlignment="Center" Margin="15" TextWrapping="Wrap"/>
+		<WrapPanel Grid.Row="1" >
+			<ComboBox ItemsSource="{Binding BoxItems}" SelectedItem="{Binding SelectedItem}" Margin="15 0" Width="150"/>
+			<TextBox IsReadOnly="True" Width="200" Text="{Binding Message}" TextAlignment="Center"/>
+		</WrapPanel>
+		<WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="5">
 			<Button Margin="15 0" Width="150" Command="{Binding AddStudentEv}">
 				<TextBlock Text="Добавить" TextAlignment="Center"/>
+			</Button>
+			<Button Margin="15 0" Width="150" Command="{Binding}">
+				<TextBlock Text="Изменить" TextAlignment="Center"/>
 			</Button>
 			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudentEv}">
 				<TextBlock Text="Удалить" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
-		<DataGrid Grid.Row="2" Margin="10"
+		<DataGrid Grid.Row="3" Margin="10"
 				  GridLinesVisibility="All"
 				  BorderThickness="1"
 				  BorderBrush="Gray"
-				  ItemsSource="{Binding Students}"
-				  SelectedItem="{Binding SelectedStudent}"
-				  IsVisible="{Binding IsStudent}">
-			<DataGrid.Columns>
-				<DataGridTextColumn Header = "Имя студента" Binding="{Binding Name}" Width=".3*" />
-				<DataGridTextColumn Header = "Фамилия студента" Binding="{Binding Surname}" Width=".3*" />
-				<DataGridTextColumn Header = "Класс студента" Binding="{Binding StudentClass}" Width=".3*" />
-				<DataGridTextColumn Header = "Оценки" Binding="{Binding GradeToString}" Width=".3*" IsVisible="{Binding IsJournal}"/>
-			</DataGrid.Columns>
-		</DataGrid>
-		<DataGrid Grid.Row="2" Margin="10"
-				  GridLinesVisibility="All"
-				  BorderThickness="1"
-				  BorderBrush="Gray"
-				  ItemsSource="{Binding Subjects}"
-				  SelectedItem="{Binding SelectedSubject}"
-				  IsVisible="{Binding !IsStudent}">
-			<DataGrid.Columns>
-				<DataGridTextColumn Header = "Предмет" Binding="{Binding SubjectName}" Width=".3*" />
-			</DataGrid.Columns>
+				  IsReadOnly="True"
+				  ItemsSource="{Binding DataObjects}"
+				  SelectedItem="{Binding SelectedObject}"
+				  x:Name="dataGrid">
 		</DataGrid>
 	</Grid>
 </UserControl>

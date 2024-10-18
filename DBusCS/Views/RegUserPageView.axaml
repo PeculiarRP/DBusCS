@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:DBusCS.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:RegUserPageViewModel"
+             x:Class="DBusCS.Views.RegUserPageView">
+	<Design.DataContext>
+		<vm:RegUserPageViewModel/>
+	</Design.DataContext>
+
+	<StackPanel Margin="15" VerticalAlignment="Center">
+		<TextBlock Text="Логин" Margin="15 5"/>
+		<TextBox Text="{Binding UserName}" Watermark="Введите логин" Margin="15" BorderBrush="{Binding UserNameBrush}"/>
+		<TextBlock Text="Пароль" Margin="15 5"/>
+		<TextBox Text="{Binding UserPassword}" Watermark="Введите пароль" Margin="15" BorderBrush="{Binding UserPasswordBrush}"/>
+		<TextBlock Text="Доступ" Margin="15 5"/>
+		<RadioButton Content="Учитель" IsChecked="{Binding IsTeacher}" Margin="15 5"/>
+		<RadioButton Content="Ученик" IsChecked="{Binding !IsTeacher}" Margin="15 5"/>
+		<WrapPanel Margin="15 5" HorizontalAlignment="Right">
+			<Button Content="Авторизация" Command="{Binding BackToAuth}" Margin="10 0" HorizontalAlignment="Right"/>
+			<Button Content="Регистрация" Command="{Binding RegUser}" Margin="10 0" HorizontalAlignment="Right"/>
+		</WrapPanel>
+	</StackPanel>
+</UserControl>

@@ -18,6 +18,13 @@ namespace DBusCS.utils
             return mes;
         }
 
+        public static async Task<string> AddUser(string login, string password, string access)
+        {
+            await ConnectCreate();
+            string mes = await _journalServer.AddUserAsync(login, password, access);
+            return mes;
+        }
+
         public static async Task<string[]> GetSudent()
         {
             await ConnectCreate();

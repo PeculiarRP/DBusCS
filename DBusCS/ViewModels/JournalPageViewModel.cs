@@ -15,11 +15,14 @@ namespace DBusCS.ViewModels
 {
     public class JournalPageViewModel: ViewModelBase
     {
-        public delegate void AddStudentDelegate ();
-        public event AddStudentDelegate OnAddStudent;
+        public delegate void Refresh(string flag);
+        public event Refresh OnRefresh;
 
-        public delegate void DeleteStudentDelegate (Student student);
-        public event DeleteStudentDelegate OnDeleteStudent;
+        public delegate void AddDelegate (string type);
+        public event AddDelegate OnAdd;
+
+        public delegate void DeleteDelegate (Dictionary<string, object> deleteInfo);
+        public event DeleteDelegate OnDelete;
 
         private string _id;
         public string ID 
@@ -29,6 +32,13 @@ namespace DBusCS.ViewModels
                 RefreshPage();
                 this.RaiseAndSetIfChanged(ref _id, value);
             }
+        }
+
+        private string _message;
+        public string Message
+        {
+            get => _message;
+            set => this.RaiseAndSetIfChanged(ref _message, value);
         }
 
         private string[] _boxItems = {
@@ -52,76 +62,50 @@ namespace DBusCS.ViewModels
             }
         }
 
-        private ObservableCollection<Student> _students;
-        public ObservableCollection<Student> Students
+        private ObservableCollection<object> _dataObjects;
+        public ObservableCollection<object> DataObjects
         {
-            get => _students;
-            set => this.RaiseAndSetIfChanged(ref _students, value);
+            get => _dataObjects;
+            set => this.RaiseAndSetIfChanged(ref _dataObjects, value);
         }
 
-        private Student _selectedStudent;
-        public Student SelectedStudent
+        private object _selectedObject;
+        public object SelectedObject
         {
-            get => _selectedStudent;
-            set => this.RaiseAndSetIfChanged(ref _selectedStudent, value);
+            get => _selectedObject;
+            set => this.RaiseAndSetIfChanged(ref _selectedObject, value);
         }
 
-        private ObservableCollection<Subject> _subjects;
-        public ObservableCollection<Subject> Subjects
-        {
-            get => _subjects;
-            set => this.RaiseAndSetIfChanged(ref _subjects, value);
-        }
-
-        private Subject _selectedSubject;
-        public Subject SelectedSubject
-        {
-            get => _selectedSubject;
-            set => this.RaiseAndSetIfChanged(ref _selectedSubject, value);
-        }
-
-        private bool _isJournal = true;
-        public bool IsJournal
-        {
-            get=> _isJournal;
-            set => this.RaiseAndSetIfChanged(ref _isJournal, value);
-        }
-
-        private bool _isStudent = true;
-        public bool IsStudent
-        {
-            get => _isStudent;
-            set => this.RaiseAndSetIfChanged(ref _isStudent, value);
-        }
-
-        public ICommand AddStudentEv => new RelayCommand(_AddStudent);
-        public ICommand DeleteStudentEv => new RelayCommand(_DeleteStudent);
+        public ICommand AddStudentEv => new RelayCommand(_AddEvent);
+        public ICommand DeleteStudentEv => new RelayCommand(_DeleteEvent);
 
         public void RefreshPage()
         {
+            string flag = "";
+            Message = "";
             switch (SelectedItem)
             {
                 case "Предметы":
-                    IsStudent = false;
+                    flag = "p";
                     _GetSubject();
                     break;
                 case "Журнал":
-                    IsStudent = true;
-                    IsJournal = true;
+                    flag = "j";
                     _GetStudent();
                     break;
                 case "Студенты":
-                    IsStudent = true;
-                    IsJournal = false;
+                    flag = "s";
                     _GetStudent();
                     break;
             }
+            OnRefresh?.Invoke(flag);
         }
 
         private void _GetStudent()
         {
             var studList = Task.Run(async () => await DBus.GetSudent())?.Result;
             List<Student> students = new List<Student>();
+            List<string> headers = new List<string>() { "Имя", "Фамилия", "Класс" };
             foreach (string s in studList)
             {
                 var parseStr = s.Split('[');
@@ -135,37 +119,52 @@ namespace DBusCS.ViewModels
                     foreach (string grade in gradeList)
                     {
                         var parsSub = grade.Trim().Split(":");
+                        headers.Add(parsSub[1]);
                         subjects.Add(new Subject(Guid.Parse(parsSub[0]), parsSub[1], Int32.Parse(parsSub[2])));
                     }
                 }
                 students.Add(new Student(Guid.Parse(studentInf[0]), studentInf[1], studentInf[2], studentInf[3], subjects));
             }
-            Students = new ObservableCollection<Student>(students);
+            DataObjects = new ObservableCollection<object>(students);
         }
 
         private void _GetSubject()
         {
             var subjectList = Task.Run(async () => await DBus.GetAllSubject()).Result;
             List<Subject> subjects = new List<Subject>();
+            List<string> headers = new List<string>() { "Предметы" };
             foreach (var subject in subjectList)
             {
                 var parseSub = subject.Trim().Split(":");
                 subjects.Add(new Subject(Guid.Parse(parseSub[0]), parseSub[1]));
             }
-            Subjects = new ObservableCollection<Subject>(subjects);
+            DataObjects = new ObservableCollection<object>(subjects);
         }
 
-        private void _DeleteStudent() 
+        private void _DeleteEvent() 
         {
-            if (SelectedStudent != null)
-            {
-                OnDeleteStudent?.Invoke(SelectedStudent);
+            if (SelectedObject != null) {
+                var dict = new Dictionary<string, object>();
+                switch (SelectedItem)
+                {
+                    case "Предметы":
+                        dict.Add("предмет", SelectedObject);
+                        break;
+                    case "Журнал":
+                        dict.Add("журнал", SelectedObject);
+                        break;
+                    case "Студенты":
+                        dict.Add("студент", SelectedObject);
+                        break;
+                }
+                OnDelete?.Invoke(dict);
             }
+            Message = "Значение не выбрано!";
         }
 
-        private void _AddStudent()
+        private void _AddEvent()
         {
-            OnAddStudent?.Invoke();
+            OnAdd?.Invoke(SelectedItem);
         }
 
         public JournalPageViewModel() { }   

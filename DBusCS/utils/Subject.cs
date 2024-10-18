@@ -28,6 +28,11 @@ namespace DBusCS.utils
             set => _grade = value;
         }
 
+        public string GetInfo()
+        {
+            return Id.ToString() + " " + SubjectName;
+        }
+
         public override string ToString()
         {
             return SubjectName + " " + Grade;

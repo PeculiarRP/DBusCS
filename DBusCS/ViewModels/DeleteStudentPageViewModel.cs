@@ -15,8 +15,10 @@ namespace DBusCS.ViewModels
         public delegate void ReturnBackDelegate();
         public event ReturnBackDelegate OnReturnBackToJournal;
 
-        private string _startOfText = "Вы уверены что хотите удалить студента ";
+        private string _startOfText = "Вы уверены что хотите удалить ";
         private string _stId;
+        private string _subId;
+        private string _typeOper;
 
         private string _pageText;
 
@@ -29,14 +31,31 @@ namespace DBusCS.ViewModels
         public ICommand DeleteStudent => new RelayCommand(_DeleteStudent);
         public ICommand BackToJournal => new RelayCommand(_Back);
 
-        public void UploadData(Student student) {
+        public void UploadData(string typeOper, Student student) {
+            _typeOper = typeOper;
             _stId = student.Id.ToString();
-            PageText = _startOfText + student.ToString();
+            PageText = _startOfText + "студента " + student.ToString();
+        }
+        public void UploadData(string typeOper, Subject subject)
+        {
+            _typeOper = typeOper;
+            _subId = subject.Id.ToString();
+            PageText = _startOfText + "предмет " + subject.GetInfo();
         }
 
         private async void _DeleteStudent()
         {
-            await DBus.DeleteStudentById(_stId);
+            switch (_typeOper)
+            {
+                case "предмет":
+
+                    break;
+                case "студент":
+                    await DBus.DeleteStudentById(_stId);
+                    break;
+                case "журнал":
+                    break;
+            }
             _Back();
         }
 
