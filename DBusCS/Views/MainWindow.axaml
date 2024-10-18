@@ -9,7 +9,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="DBusCS"
 		WindowStartupLocation="CenterScreen"
-		Width="600" Height="650">
+		Width="650" Height="650">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>

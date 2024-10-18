@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AddObjectPageView.axaml.cs">
+      <DependentUpon>AddObjectPageView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AuthPageView.axaml.cs">
       <DependentUpon>AuthPageView.axaml</DependentUpon>
     </Compile>

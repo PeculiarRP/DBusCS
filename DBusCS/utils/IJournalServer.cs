@@ -17,6 +17,9 @@ namespace DBusCS.utils
         Task DeleteStudentAsync(string id);
         Task AddStudentAsync(string name, string surname, string classStudent);
         Task<string[]> GetAllSubjectAsync();
+        Task<string> AddSubjectAsync(string subjectName);
+        Task DeleteSubjectByIdAsync(string id);
+        Task<string> UpdateSubjectByIdAsync(string id, string subjectName);
 
         Task terminateServerAsync();
     }

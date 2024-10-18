@@ -48,6 +48,24 @@ namespace DBusCS.utils
             await ConnectCreate();
             return await _journalServer.GetAllSubjectAsync();
         }
+
+        public static async Task<string> AddSubject(String subjectName)
+        {
+            await ConnectCreate();
+            return await _journalServer.AddSubjectAsync(subjectName);
+        }
+
+        public static async Task DeleteSubjectById(string id)
+        {
+            await ConnectCreate();
+            await _journalServer.DeleteSubjectByIdAsync(id);
+        }
+
+        public static async Task<string> UpdateSubject(string id, string subjectName)
+        {
+            await ConnectCreate();
+            return await _journalServer.UpdateSubjectByIdAsync(id, subjectName);
+        }
         
         public static async Task ConnectCreate()
         {

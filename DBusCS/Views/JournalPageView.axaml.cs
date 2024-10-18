@@ -21,11 +21,11 @@ public partial class JournalPageView : UserControl
 
     private void OnLoaded(object sender, RoutedEventArgs e) {
         var viewModel = (JournalPageViewModel)this.DataContext;
-        OnPropertyChanged();
         viewModel.OnRefresh += OnPropertyChanged;
+        viewModel.RefreshPage();
     }
 
-    private void OnPropertyChanged(string flag = "j")
+    private void OnPropertyChanged(string flag)
     {
         var dataGrid = this.FindControl<DataGrid>("dataGrid");
         var viewModel = (JournalPageViewModel)this.DataContext;

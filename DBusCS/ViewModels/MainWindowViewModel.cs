@@ -29,6 +29,8 @@ namespace DBusCS.ViewModels
                 case "Журнал":
                     break;
                 case "Предметы":
+                    CurrentPage = pages[5];
+                    ((AddObjectPageViewModel)pages[5]).UpData();
                     break;
                 case "Студенты":
                     CurrentPage = pages[2];
@@ -59,12 +61,22 @@ namespace DBusCS.ViewModels
             }
         }
 
+        private void _UpdateEvent(Dictionary<string, object> updateInfo)
+        {
+            if (updateInfo.ContainsKey("предмет"))
+            {
+                CurrentPage = pages[5];
+                ((AddObjectPageViewModel)pages[5]).UpData((Subject)updateInfo["предмет"]);
+            }
+        }
+
         private ViewModelBase[] pages = {
             new AuthPageViewModel(),
             new JournalPageViewModel(),
             new AddStudentPageViewModel(),
             new DeleteStudentPageViewModel(),
             new RegUserPageViewModel(),
+            new AddObjectPageViewModel(),
         };
 
         private ViewModelBase _currentPage;
@@ -82,6 +94,7 @@ namespace DBusCS.ViewModels
             ((AddStudentPageViewModel)pages[2]).OnReturnBackToJournal += _BackToJournal;
             ((DeleteStudentPageViewModel)pages[3]).OnReturnBackToJournal += _BackToJournal;
             ((RegUserPageViewModel)pages[4]).OnBackAuth += _BackToAuth;
+            ((AddObjectPageViewModel)pages[5]).OnReturnBackToJournal += _BackToJournal;
         }   
     }
 }

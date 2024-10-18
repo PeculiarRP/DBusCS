@@ -48,7 +48,7 @@ namespace DBusCS.ViewModels
             switch (_typeOper)
             {
                 case "предмет":
-
+                    await DBus.DeleteSubjectById(_subId);
                     break;
                 case "студент":
                     await DBus.DeleteStudentById(_stId);

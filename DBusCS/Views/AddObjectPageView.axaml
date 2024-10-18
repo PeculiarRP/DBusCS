@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DBusCS.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:AddObjectPageViewModel"
+             x:Class="DBusCS.Views.AddObjectPageView">
+	<Design.DataContext>
+		<vm:AddObjectPageViewModel/>
+	</Design.DataContext>
+	<StackPanel Margin="15" VerticalAlignment="Center">
+		<TextBlock Text="Название предмета" Margin="10"/>
+		<TextBox Text="{Binding SubjectName}" Watermark="Введите название предмета" Margin="10" BorderBrush="{Binding SubjectBrush}"/>
+		<WrapPanel Margin="10" HorizontalAlignment="Right">
+			<Button Width="150" Margin="15 0" Command="{Binding BackToJournal}">
+				<TextBlock Text="Назад" TextAlignment="Center"/>
+			</Button>
+			<Button Width="150" Margin="15 0" Command="{Binding SubjectEvent}">
+				<TextBlock Text="{Binding ButtonLabel}" TextAlignment="Center"/>				
+			</Button>
+		</WrapPanel>
+	</StackPanel>
+</UserControl>

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using DBusCS.utils;
 using CommunityToolkit.Mvvm.Input;
 using Avalonia.Media;
+using Tmds.DBus.Protocol;
 
 namespace DBusCS.ViewModels
 {
@@ -23,6 +24,9 @@ namespace DBusCS.ViewModels
 
         public delegate void DeleteDelegate (Dictionary<string, object> deleteInfo);
         public event DeleteDelegate OnDelete;
+
+        public delegate void UpdateDelegate (Dictionary<string, object> deleteInfo);
+        public event UpdateDelegate OnUpdate;
 
         private string _id;
         public string ID 
@@ -78,6 +82,8 @@ namespace DBusCS.ViewModels
 
         public ICommand AddStudentEv => new RelayCommand(_AddEvent);
         public ICommand DeleteStudentEv => new RelayCommand(_DeleteEvent);
+
+        public ICommand UpdateData => new RelayCommand(_UpdateData);
 
         public void RefreshPage()
         {
@@ -140,10 +146,10 @@ namespace DBusCS.ViewModels
             }
             DataObjects = new ObservableCollection<object>(subjects);
         }
-
-        private void _DeleteEvent() 
+        private void _EventHandl(string type)
         {
-            if (SelectedObject != null) {
+            if (SelectedObject != null)
+            {
                 var dict = new Dictionary<string, object>();
                 switch (SelectedItem)
                 {
@@ -157,14 +163,25 @@ namespace DBusCS.ViewModels
                         dict.Add("студент", SelectedObject);
                         break;
                 }
-                OnDelete?.Invoke(dict);
+                if (type == "del") OnDelete?.Invoke(dict);
+                else OnUpdate?.Invoke(dict);
             }
             Message = "Значение не выбрано!";
+        }
+
+        private void _DeleteEvent() 
+        {
+            _EventHandl("del");
         }
 
         private void _AddEvent()
         {
             OnAdd?.Invoke(SelectedItem);
+        }
+
+        private void _UpdateData()
+        {
+            _EventHandl("add");
         }
 
         public JournalPageViewModel() { }   

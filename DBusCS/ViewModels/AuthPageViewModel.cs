@@ -6,10 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DBusCS.utils;
-using System.Reactive;
 using CommunityToolkit.Mvvm.Input;
 using Avalonia.Media;
-using System.Drawing;
 
 namespace DBusCS.ViewModels
 {
