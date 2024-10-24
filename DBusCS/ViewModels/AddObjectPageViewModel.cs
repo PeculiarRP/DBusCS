@@ -20,6 +20,7 @@ namespace DBusCS.ViewModels
 
         public void UpData()
         {
+            _currentSubject = null;
             ButtonLabel = "Добавить";
             SubjectName = "";
         }

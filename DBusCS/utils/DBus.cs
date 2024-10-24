@@ -37,10 +37,15 @@ namespace DBusCS.utils
             await _journalServer.DeleteStudentAsync(id);
         }
 
-        public static async Task AddStudent(string name, string surname, string studentClass)
+        public static async Task<string> AddStudent(string name, string surname, string studentClass)
         {
             await ConnectCreate();
-            await _journalServer.AddStudentAsync(name, surname, studentClass);
+            return await _journalServer.AddStudentAsync(name, surname, studentClass);
+        }
+
+        public static async Task<string> UpdateStudentById(string id, string name, string surname, string studentClass) {
+            await ConnectCreate();
+            return await _journalServer.UpdateStudentByIdAsync(id, name, surname, studentClass);
         }
 
         public static async Task<string[]> GetAllSubject()

@@ -25,7 +25,7 @@
 			<Button Margin="15 0" Width="150" Command="{Binding AddStudentEv}">
 				<TextBlock Text="Добавить" TextAlignment="Center"/>
 			</Button>
-			<Button Margin="15 0" Width="150" Command="{Binding}">
+			<Button Margin="15 0" Width="150" Command="{Binding UpdateData}">
 				<TextBlock Text="Изменить" TextAlignment="Center"/>
 			</Button>
 			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudentEv}">

@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DBusCS.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="vm:AUGradePageViewModel"
+             x:Class="DBusCS.Views.AUGradePageView">
+	<Design.DataContext>
+		<vm:AUGradePageViewModel/>
+	</Design.DataContext>
+	<StackPanel Margin="15" VerticalAlignment="Center">
+		<StackPanel Margin="15" x:Name="stackPanel"/>
+		<WrapPanel HorizontalAlignment="Right">
+			<Button Width="150" Command="{Binding BackToJournal}" Margin="15 0">
+				<TextBlock Text="Назад" TextAlignment="Center"/>
+			</Button>
+			<Button Width="150" Command="{Binding ButtonEv}" Margin="15 0">
+				<TextBlock Text="{Binding ButtonLabel}" TextAlignment="Center"/>
+			</Button>
+		</WrapPanel>
+	</StackPanel>
+</UserControl>

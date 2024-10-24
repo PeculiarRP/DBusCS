@@ -150,6 +150,7 @@ namespace DBusCS.ViewModels
         {
             if (SelectedObject != null)
             {
+                Message = "";
                 var dict = new Dictionary<string, object>();
                 switch (SelectedItem)
                 {
@@ -166,7 +167,7 @@ namespace DBusCS.ViewModels
                 if (type == "del") OnDelete?.Invoke(dict);
                 else OnUpdate?.Invoke(dict);
             }
-            Message = "Значение не выбрано!";
+            else Message = "Значение не выбрано!";
         }
 
         private void _DeleteEvent() 

@@ -13,9 +13,9 @@ namespace DBusCS.utils
         Task<string> AuthUserAsync(string login, string password);
         Task<string> AddUserAsync(string login, string password, string access);
         Task<string[]> GetStudentsAsync();
-        Task<string> UpdateStudentByIdAsync();
+        Task<string> UpdateStudentByIdAsync(string id, string name, string surname, string classStudent);
         Task DeleteStudentAsync(string id);
-        Task AddStudentAsync(string name, string surname, string classStudent);
+        Task<string> AddStudentAsync(string name, string surname, string classStudent);
         Task<string[]> GetAllSubjectAsync();
         Task<string> AddSubjectAsync(string subjectName);
         Task DeleteSubjectByIdAsync(string id);

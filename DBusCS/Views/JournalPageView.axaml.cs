@@ -48,6 +48,15 @@ public partial class JournalPageView : UserControl
             {
                 if (objectList[0] is Student st)
                 {
+                    if (flag == "s")
+                    {
+                        dataGrid.Columns.Add(new DataGridTextColumn()
+                        {
+                            Header = "ID студента",
+                            Binding = new Avalonia.Data.Binding("Id"),
+                            Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
+                        });
+                    }
                     dataGrid.Columns.Add(new DataGridTextColumn()
                     {
                         Header = "Имя",

@@ -22,7 +22,7 @@
 				<TextBlock Text="Отмена" TextAlignment="Center"/>
 			</Button>
 			<Button Width="150" Command="{Binding AddStudentEv}" Margin="10">
-				<TextBlock Text="Добавить" TextAlignment="Center"/>
+				<TextBlock Text="{Binding ButtonLabel}" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
 	</StackPanel>

@@ -16,6 +16,33 @@ namespace DBusCS.ViewModels
         public delegate void ReturnBackDelegate ();
         public event ReturnBackDelegate OnReturnBackToJournal;
 
+        private Student _student;
+
+        public void UpData()
+        {
+            _student = null;
+            ButtonLabel = "Добавить";
+            Name = "";
+            Surname = "";
+            StudentClass = "";
+        }
+
+        public void UpData(Student student)
+        {
+            ButtonLabel = "Изменить";
+            _student = student;
+            Name = student.Name;
+            Surname = student.Surname;
+            StudentClass = student.StudentClass;
+        }
+
+        private string _buttonLabel;
+        public string ButtonLabel
+        {
+            get => _buttonLabel;
+            set => this.RaiseAndSetIfChanged(ref _buttonLabel, value);
+        }
+
         private string _name;
         public string Name 
         {
@@ -50,7 +77,7 @@ namespace DBusCS.ViewModels
             }
         }
 
-        public ICommand AddStudentEv => new RelayCommand(_AddStudent);
+        public ICommand AddStudentEv => new RelayCommand(_StudentEvent);
         public ICommand ReturnBackEv => new RelayCommand(_RetBack);
 
         private bool _RightClass(string value)
@@ -66,12 +93,16 @@ namespace DBusCS.ViewModels
             OnReturnBackToJournal?.Invoke();
         }
 
-        private async void _AddStudent()
+        private async void _StudentEvent()
         {
             if (Name != "" && Surname != "" && _RightClass(StudentClass))
             {
-                await DBus.AddStudent(Name, Surname, StudentClass);
-                _RetBack();
+                var req = _student == null ? await DBus.AddStudent(Name, Surname, StudentClass) : await DBus.UpdateStudentById(_student.Id.ToString(), Name, Surname, StudentClass);
+                if (req != "Successful") {
+                    Name = req;
+                    NameBrush = new SolidColorBrush(Colors.Red);
+                }
+                else _RetBack();
             }
             
         }
