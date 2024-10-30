@@ -16,7 +16,7 @@
 				<TextBlock Text="Назад" TextAlignment="Center"/>
 			</Button>
 			<Button Width="150" Command="{Binding ButtonEv}" Margin="15 0">
-				<TextBlock Text="{Binding ButtonLabel}" TextAlignment="Center"/>
+				<TextBlock Text="Изменить" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
 	</StackPanel>

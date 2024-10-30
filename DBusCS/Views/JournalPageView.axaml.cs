@@ -46,47 +46,53 @@ public partial class JournalPageView : UserControl
             }
             else
             {
-                if (objectList[0] is Student st)
+                Student student = (Student) objectList[0];
+                for(int i = 0; i < objectList.Count; i++)
                 {
-                    if (flag == "s")
+                    Student tmp = (Student)objectList[i];
+                    if ((tmp.Grades != null) && (tmp.Grades.Count > student.Grades.Count)){
+                        student = tmp;
+                    }
+                    
+                }
+                if (flag == "s")
+                {
+                    dataGrid.Columns.Add(new DataGridTextColumn()
+                    {
+                        Header = "ID студента",
+                        Binding = new Avalonia.Data.Binding("Id"),
+                        Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
+                    });
+                }
+                dataGrid.Columns.Add(new DataGridTextColumn()
+                {
+                    Header = "Имя",
+                    Binding = new Avalonia.Data.Binding("Name"),
+                    Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
+                });
+                dataGrid.Columns.Add(new DataGridTextColumn()
+                {
+                    Header = "Фамилия",
+                    Binding = new Avalonia.Data.Binding("Surname"),
+                    Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
+                });
+                dataGrid.Columns.Add(new DataGridTextColumn()
+                {
+                    Header = "Класс",
+                    Binding = new Avalonia.Data.Binding("StudentClass"),
+                    Width = flag == "s" ? new DataGridLength(1, DataGridLengthUnitType.Star) : new DataGridLength(1, DataGridLengthUnitType.Auto)
+
+                });
+                if (flag == "j")
+                {
+                    for(int i=0; i < student.Grades.Count; i++)
                     {
                         dataGrid.Columns.Add(new DataGridTextColumn()
                         {
-                            Header = "ID студента",
-                            Binding = new Avalonia.Data.Binding("Id"),
-                            Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
+                            Header = student.Grades[i].SubjectName,
+                            Binding = new Avalonia.Data.Binding($"Grades[{i}].Grade"),
+                            Width = (i - 1) == student.Grades.Count ? new DataGridLength(1, DataGridLengthUnitType.Star) : new DataGridLength(0.3, DataGridLengthUnitType.Star)
                         });
-                    }
-                    dataGrid.Columns.Add(new DataGridTextColumn()
-                    {
-                        Header = "Имя",
-                        Binding = new Avalonia.Data.Binding("Name"),
-                        Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
-                    });
-                    dataGrid.Columns.Add(new DataGridTextColumn()
-                    {
-                        Header = "Фамилия",
-                        Binding = new Avalonia.Data.Binding("Surname"),
-                        Width = new DataGridLength(1, DataGridLengthUnitType.Auto)
-                    });
-                    dataGrid.Columns.Add(new DataGridTextColumn()
-                    {
-                        Header = "Класс",
-                        Binding = new Avalonia.Data.Binding("StudentClass"),
-                        Width = flag == "s" ? new DataGridLength(1, DataGridLengthUnitType.Star) : new DataGridLength(1, DataGridLengthUnitType.Auto)
-
-                    });
-                    if (flag == "j")
-                    {
-                        for(int i=0; i < st.Grades.Count; i++)
-                        {
-                            dataGrid.Columns.Add(new DataGridTextColumn()
-                            {
-                                Header = st.Grades[i].SubjectName,
-                                Binding = new Avalonia.Data.Binding($"Grades[{i}].Grade"),
-                                Width = (i - 1) == st.Grades.Count ? new DataGridLength(1, DataGridLengthUnitType.Star) : new DataGridLength(0.3, DataGridLengthUnitType.Star)
-                            });
-                        }
                     }
                 }
             }

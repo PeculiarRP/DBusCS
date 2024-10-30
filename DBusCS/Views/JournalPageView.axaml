@@ -11,7 +11,9 @@
 	</Design.DataContext>
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="0.18*"/>
+			<RowDefinition Height="0.2*"/>
+			<RowDefinition Height="0.1*"/>
+			<RowDefinition Height="0.1*"/>
 			<RowDefinition Height="0.1*"/>
 			<RowDefinition Height="0.1*"/>
 			<RowDefinition Height="*"/>
@@ -22,7 +24,7 @@
 			<TextBox IsReadOnly="True" Width="200" Text="{Binding Message}" TextAlignment="Center"/>
 		</WrapPanel>
 		<WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="5">
-			<Button Margin="15 0" Width="150" Command="{Binding AddStudentEv}">
+			<Button Margin="15 0" Width="150" Command="{Binding AddStudentEv}" IsVisible="{Binding IsNotJournal}">
 				<TextBlock Text="Добавить" TextAlignment="Center"/>
 			</Button>
 			<Button Margin="15 0" Width="150" Command="{Binding UpdateData}">
@@ -32,7 +34,14 @@
 				<TextBlock Text="Удалить" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
-		<DataGrid Grid.Row="3" Margin="10"
+		<WrapPanel Grid.Row="3" HorizontalAlignment="Center" Margin="5">
+			<RadioButton Content="ASC" IsChecked="{Binding IsASC}" Margin="15 0"/>
+			<RadioButton Content="DESC" IsChecked="{Binding !IsASC}" Margin="15 0"/>
+		</WrapPanel>
+		<WrapPanel Grid.Row="4">
+
+		</WrapPanel>
+		<DataGrid Grid.Row="5" Margin="10"
 				  GridLinesVisibility="All"
 				  BorderThickness="1"
 				  BorderBrush="Gray"

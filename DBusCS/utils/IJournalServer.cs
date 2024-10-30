@@ -12,11 +12,16 @@ namespace DBusCS.utils
     {
         Task<string> AuthUserAsync(string login, string password);
         Task<string> AddUserAsync(string login, string password, string access);
-        Task<string[]> GetStudentsAsync();
+
+        Task<string[]> GetStudentsAsync(Boolean isAsc);
         Task<string> UpdateStudentByIdAsync(string id, string name, string surname, string classStudent);
         Task DeleteStudentAsync(string id);
         Task<string> AddStudentAsync(string name, string surname, string classStudent);
-        Task<string[]> GetAllSubjectAsync();
+
+        Task<string> DeleteAllGradeByStudentIdAsync(string id);
+        Task<string> UpdateGradeByIdAsync(string data);
+
+        Task<string[]> GetAllSubjectAsync(Boolean isAsc);
         Task<string> AddSubjectAsync(string subjectName);
         Task DeleteSubjectByIdAsync(string id);
         Task<string> UpdateSubjectByIdAsync(string id, string subjectName);

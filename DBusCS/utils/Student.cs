@@ -40,7 +40,7 @@ namespace DBusCS.utils
             set => _grades = value;
         }
 
-        public String GradeToString
+        public string GradeToString
         {
             get => _gradeToString();
         }

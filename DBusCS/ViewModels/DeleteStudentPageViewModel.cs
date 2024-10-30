@@ -17,7 +17,6 @@ namespace DBusCS.ViewModels
 
         private string _startOfText = "Вы уверены что хотите удалить ";
         private string _stId;
-        private string _subId;
         private string _typeOper;
 
         private string _pageText;
@@ -34,12 +33,13 @@ namespace DBusCS.ViewModels
         public void UploadData(string typeOper, Student student) {
             _typeOper = typeOper;
             _stId = student.Id.ToString();
-            PageText = _startOfText + "студента " + student.ToString();
+            var type = typeOper == "студент" ? "студента " : "все оценки студента ";
+            PageText = _startOfText + type + student.ToString();
         }
         public void UploadData(string typeOper, Subject subject)
         {
             _typeOper = typeOper;
-            _subId = subject.Id.ToString();
+            _stId = subject.Id.ToString();
             PageText = _startOfText + "предмет " + subject.GetInfo();
         }
 
@@ -48,12 +48,13 @@ namespace DBusCS.ViewModels
             switch (_typeOper)
             {
                 case "предмет":
-                    await DBus.DeleteSubjectById(_subId);
+                    await DBus.DeleteSubjectById(_stId);
                     break;
                 case "студент":
                     await DBus.DeleteStudentById(_stId);
                     break;
                 case "журнал":
+                    await DBus.DeleteAllGradeByStudentId(_stId);
                     break;
             }
             _Back();

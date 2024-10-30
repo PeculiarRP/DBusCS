@@ -37,7 +37,7 @@ namespace DBusCS.utils
         }
         public override string ToString()
         {
-            return Id.ToString() + "\n" + Login;
+            return Id.ToString() + "\n" + "Ник пользователя: " + Login + " Статус пользователя: " + (Access == "t" ? "Учитель" : "Студент");
         }
     }
 }

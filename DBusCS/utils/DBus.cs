@@ -25,10 +25,10 @@ namespace DBusCS.utils
             return mes;
         }
 
-        public static async Task<string[]> GetSudent()
+        public static async Task<string[]> GetSudent(Boolean isAsc)
         {
             await ConnectCreate();
-            return await _journalServer.GetStudentsAsync();
+            return await _journalServer.GetStudentsAsync(isAsc);
         }
 
         public static async Task DeleteStudentById(string id)
@@ -48,10 +48,10 @@ namespace DBusCS.utils
             return await _journalServer.UpdateStudentByIdAsync(id, name, surname, studentClass);
         }
 
-        public static async Task<string[]> GetAllSubject()
+        public static async Task<string[]> GetAllSubject(Boolean isAsc)
         {
             await ConnectCreate();
-            return await _journalServer.GetAllSubjectAsync();
+            return await _journalServer.GetAllSubjectAsync(isAsc);
         }
 
         public static async Task<string> AddSubject(String subjectName)
@@ -71,7 +71,19 @@ namespace DBusCS.utils
             await ConnectCreate();
             return await _journalServer.UpdateSubjectByIdAsync(id, subjectName);
         }
-        
+
+        public static async Task<string> DeleteAllGradeByStudentId(string id)
+        {
+            await ConnectCreate();
+            return await _journalServer.DeleteAllGradeByStudentIdAsync(id);
+        }
+
+        public static async Task<string> UpdateGradeByStudent(string data)
+        {
+            await ConnectCreate();
+            return await _journalServer.UpdateGradeByIdAsync(data);
+        }
+
         public static async Task ConnectCreate()
         {
             if (_journalServer == null)

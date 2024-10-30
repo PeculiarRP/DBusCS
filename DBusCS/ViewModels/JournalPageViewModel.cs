@@ -61,7 +61,26 @@ namespace DBusCS.ViewModels
         {
             get => _selectedItem;
             set {
+                if (value != "Журнал") IsNotJournal = true;
+                else IsNotJournal = false;
                 this.RaiseAndSetIfChanged(ref _selectedItem, value);
+                RefreshPage();
+            }
+        }
+
+        private bool _isNotJournal = false;
+        public bool IsNotJournal
+        {
+            get => _isNotJournal;
+            set => this.RaiseAndSetIfChanged(ref _isNotJournal, value);
+        }
+
+        private bool _isASC = true;
+        public bool IsASC
+        {
+            get => _isASC;
+            set { 
+                this.RaiseAndSetIfChanged(ref _isASC, value); 
                 RefreshPage();
             }
         }
@@ -109,7 +128,7 @@ namespace DBusCS.ViewModels
 
         private void _GetStudent()
         {
-            var studList = Task.Run(async () => await DBus.GetSudent())?.Result;
+            var studList = Task.Run(async () => await DBus.GetSudent(IsASC))?.Result;
             List<Student> students = new List<Student>();
             List<string> headers = new List<string>() { "Имя", "Фамилия", "Класс" };
             foreach (string s in studList)
@@ -136,7 +155,7 @@ namespace DBusCS.ViewModels
 
         private void _GetSubject()
         {
-            var subjectList = Task.Run(async () => await DBus.GetAllSubject()).Result;
+            var subjectList = Task.Run(async () => await DBus.GetAllSubject(IsASC)).Result;
             List<Subject> subjects = new List<Subject>();
             List<string> headers = new List<string>() { "Предметы" };
             foreach (var subject in subjectList)

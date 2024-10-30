@@ -26,8 +26,6 @@ namespace DBusCS.ViewModels
         {
             switch (type)
             {
-                case "Журнал":
-                    break;
                 case "Предметы":
                     CurrentPage = pages[5];
                     ((AddObjectPageViewModel)pages[5]).UpData();
@@ -54,7 +52,7 @@ namespace DBusCS.ViewModels
             }
             else if (deleteInfo.ContainsKey("журнал"))
             {
-
+                ((DeleteStudentPageViewModel)pages[3]).UploadData("журнал", (Student)deleteInfo["журнал"]);
             }
             else
             {
@@ -71,7 +69,8 @@ namespace DBusCS.ViewModels
             }
             else if (updateInfo.ContainsKey("журнал"))
             {
-
+                CurrentPage = pages[6];
+                ((AUGradePageViewModel)pages[6]).UpData((Student)updateInfo["журнал"]);
             }
             else
             {
@@ -88,6 +87,7 @@ namespace DBusCS.ViewModels
             new DeleteStudentPageViewModel(),
             new RegUserPageViewModel(),
             new AddObjectPageViewModel(),
+            new AUGradePageViewModel(),
         };
 
         private ViewModelBase _currentPage;
@@ -107,6 +107,7 @@ namespace DBusCS.ViewModels
             ((DeleteStudentPageViewModel)pages[3]).OnReturnBackToJournal += _BackToJournal;
             ((RegUserPageViewModel)pages[4]).OnBackAuth += _BackToAuth;
             ((AddObjectPageViewModel)pages[5]).OnReturnBackToJournal += _BackToJournal;
+            ((AUGradePageViewModel)pages[6]).OnReturnBackToJournal += _BackToJournal;
         }   
     }
 }

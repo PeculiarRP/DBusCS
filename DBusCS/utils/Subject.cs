@@ -33,6 +33,11 @@ namespace DBusCS.utils
             return Id.ToString() + " " + SubjectName;
         }
 
+        public string GetToUp()
+        {
+            return Id.ToString() + ":" + Grade;
+        }
+
         public override string ToString()
         {
             return SubjectName + " " + Grade;
