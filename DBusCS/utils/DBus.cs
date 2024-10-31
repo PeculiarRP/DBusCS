@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Tmds.DBus;
@@ -25,10 +26,16 @@ namespace DBusCS.utils
             return mes;
         }
 
-        public static async Task<string[]> GetSudent(Boolean isAsc)
+        public static async Task<string[]> GetSudent(bool isAsc)
         {
             await ConnectCreate();
             return await _journalServer.GetStudentsAsync(isAsc);
+        }
+
+        public static async Task<string[]> GetStudentByParam(string param, bool isAsc)
+        {
+            await ConnectCreate();
+            return await _journalServer.GetStudentBySurnameAsync(param, isAsc);
         }
 
         public static async Task DeleteStudentById(string id)
@@ -48,13 +55,19 @@ namespace DBusCS.utils
             return await _journalServer.UpdateStudentByIdAsync(id, name, surname, studentClass);
         }
 
-        public static async Task<string[]> GetAllSubject(Boolean isAsc)
+        public static async Task<string[]> GetAllSubject(bool isAsc)
         {
             await ConnectCreate();
             return await _journalServer.GetAllSubjectAsync(isAsc);
         }
 
-        public static async Task<string> AddSubject(String subjectName)
+        public static async Task<string[]> GetSubjectByParam(string param, bool isAsc)
+        {
+            await ConnectCreate();
+            return await _journalServer.GetSubjectByParamAsync(param, isAsc);
+        }
+
+        public static async Task<string> AddSubject(string subjectName)
         {
             await ConnectCreate();
             return await _journalServer.AddSubjectAsync(subjectName);

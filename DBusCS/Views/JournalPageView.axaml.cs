@@ -29,6 +29,7 @@ public partial class JournalPageView : UserControl
     {
         var dataGrid = this.FindControl<DataGrid>("dataGrid");
         var viewModel = (JournalPageViewModel)this.DataContext;
+        var searchBox = this.FindControl<TextBox>("searchBox");
         var objectList = viewModel.DataObjects;
         dataGrid.Columns.Clear();
 
@@ -43,9 +44,11 @@ public partial class JournalPageView : UserControl
                     Width = new DataGridLength(1, DataGridLengthUnitType.Star)
                 };
                 dataGrid.Columns.Add(column);
+                searchBox.Watermark = "¬ведите название предмета";
             }
             else
             {
+                searchBox.Watermark = "¬ведите фамилию студента";
                 Student student = (Student) objectList[0];
                 for(int i = 0; i < objectList.Count; i++)
                 {
@@ -53,7 +56,6 @@ public partial class JournalPageView : UserControl
                     if ((tmp.Grades != null) && (tmp.Grades.Count > student.Grades.Count)){
                         student = tmp;
                     }
-                    
                 }
                 if (flag == "s")
                 {

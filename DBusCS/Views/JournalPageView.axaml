@@ -27,25 +27,29 @@
 			<Button Margin="15 0" Width="150" Command="{Binding AddStudentEv}" IsVisible="{Binding IsNotJournal}">
 				<TextBlock Text="Добавить" TextAlignment="Center"/>
 			</Button>
-			<Button Margin="15 0" Width="150" Command="{Binding UpdateData}">
+			<Button Margin="15 0" Width="150" Command="{Binding UpdateData}" IsVisible="{Binding IsTeacher}">
 				<TextBlock Text="Изменить" TextAlignment="Center"/>
 			</Button>
-			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudentEv}">
+			<Button Margin="15 0" Width="150" Command="{Binding DeleteStudentEv}" IsVisible="{Binding IsTeacher}">
 				<TextBlock Text="Удалить" TextAlignment="Center"/>
 			</Button>
 		</WrapPanel>
 		<WrapPanel Grid.Row="3" HorizontalAlignment="Center" Margin="5">
-			<RadioButton Content="ASC" IsChecked="{Binding IsASC}" Margin="15 0"/>
-			<RadioButton Content="DESC" IsChecked="{Binding !IsASC}" Margin="15 0"/>
+			<RadioButton Content="ASC" IsChecked="{Binding IsASC}" Margin="10 0"/>
+			<RadioButton Content="DESC" IsChecked="{Binding !IsASC}" Margin="10 0"/>
 		</WrapPanel>
-		<WrapPanel Grid.Row="4">
-
+		<WrapPanel Grid.Row="4" HorizontalAlignment="Center" Margin="5">
+			<TextBox x:Name="searchBox" Text="{Binding SearchText}" Width="400" Margin="15 0"/>
+			<Button Margin="15 0" Width="150" Command="{Binding SearchData}">
+				<TextBlock Text="Поиск" TextAlignment="Center"/>
+			</Button>
 		</WrapPanel>
 		<DataGrid Grid.Row="5" Margin="10"
 				  GridLinesVisibility="All"
 				  BorderThickness="1"
 				  BorderBrush="Gray"
 				  IsReadOnly="True"
+				  CanUserSortColumns="False"
 				  ItemsSource="{Binding DataObjects}"
 				  SelectedItem="{Binding SelectedObject}"
 				  x:Name="dataGrid">

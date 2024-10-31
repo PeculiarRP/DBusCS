@@ -16,6 +16,13 @@ namespace DBusCS.ViewModels
 {
     public class JournalPageViewModel: ViewModelBase
     {
+        private static string[] _teacher = {
+            "Журнал",
+            "Предметы",
+            "Студенты"
+        };
+        private static string[] _student = { "Журнал" };
+
         public delegate void Refresh(string flag);
         public event Refresh OnRefresh;
 
@@ -35,6 +42,16 @@ namespace DBusCS.ViewModels
             set {
                 RefreshPage();
                 this.RaiseAndSetIfChanged(ref _id, value);
+                if (value.IndexOf("Студент") != -1)
+                {
+                    BoxItems = _student;
+                    IsTeacher = false;
+                }
+                else
+                {
+                    BoxItems = _teacher;
+                    IsTeacher = true;
+                }
             }
         }
 
@@ -45,15 +62,12 @@ namespace DBusCS.ViewModels
             set => this.RaiseAndSetIfChanged(ref _message, value);
         }
 
-        private string[] _boxItems = {
-            "Журнал",
-            "Предметы",
-            "Студенты"
-        };
+        private string[] _boxItems = _teacher;
 
         public string[] BoxItems
         {
             get => _boxItems;
+            set => this.RaiseAndSetIfChanged(ref _boxItems, value);
         }
 
         private string _selectedItem = "Журнал";
@@ -66,6 +80,13 @@ namespace DBusCS.ViewModels
                 this.RaiseAndSetIfChanged(ref _selectedItem, value);
                 RefreshPage();
             }
+        }
+
+        private string _searchText = "";
+        public string SearchText
+        {
+            get => _searchText;
+            set => this.RaiseAndSetIfChanged(ref _searchText, value);
         }
 
         private bool _isNotJournal = false;
@@ -85,6 +106,13 @@ namespace DBusCS.ViewModels
             }
         }
 
+        private bool _isTeacher = true;
+        public bool IsTeacher
+        {
+            get => _isTeacher;
+            set => this.RaiseAndSetIfChanged(ref _isTeacher, value);
+        }
+
         private ObservableCollection<object> _dataObjects;
         public ObservableCollection<object> DataObjects
         {
@@ -101,8 +129,8 @@ namespace DBusCS.ViewModels
 
         public ICommand AddStudentEv => new RelayCommand(_AddEvent);
         public ICommand DeleteStudentEv => new RelayCommand(_DeleteEvent);
-
         public ICommand UpdateData => new RelayCommand(_UpdateData);
+        public ICommand SearchData => new RelayCommand(_SearchData);
 
         public void RefreshPage()
         {
@@ -126,11 +154,10 @@ namespace DBusCS.ViewModels
             OnRefresh?.Invoke(flag);
         }
 
-        private void _GetStudent()
+        private void _GetStudent(string[] data = null)
         {
-            var studList = Task.Run(async () => await DBus.GetSudent(IsASC))?.Result;
+            var studList = data == null ? Task.Run(async () => await DBus.GetSudent(IsASC))?.Result : data;
             List<Student> students = new List<Student>();
-            List<string> headers = new List<string>() { "Имя", "Фамилия", "Класс" };
             foreach (string s in studList)
             {
                 var parseStr = s.Split('[');
@@ -144,7 +171,6 @@ namespace DBusCS.ViewModels
                     foreach (string grade in gradeList)
                     {
                         var parsSub = grade.Trim().Split(":");
-                        headers.Add(parsSub[1]);
                         subjects.Add(new Subject(Guid.Parse(parsSub[0]), parsSub[1], Int32.Parse(parsSub[2])));
                     }
                 }
@@ -153,11 +179,10 @@ namespace DBusCS.ViewModels
             DataObjects = new ObservableCollection<object>(students);
         }
 
-        private void _GetSubject()
+        private void _GetSubject(string[] data = null)
         {
-            var subjectList = Task.Run(async () => await DBus.GetAllSubject(IsASC)).Result;
+            var subjectList = data == null ? Task.Run(async () => await DBus.GetAllSubject(IsASC)).Result : data;
             List<Subject> subjects = new List<Subject>();
-            List<string> headers = new List<string>() { "Предметы" };
             foreach (var subject in subjectList)
             {
                 var parseSub = subject.Trim().Split(":");
@@ -202,6 +227,12 @@ namespace DBusCS.ViewModels
         private void _UpdateData()
         {
             _EventHandl("add");
+        }
+
+        private void _SearchData()
+        {
+            if (SelectedItem != "Предметы") _GetStudent(Task.Run(async () => await DBus.GetStudentByParam(SearchText.Trim(), IsASC)).Result);
+            else _GetSubject(Task.Run(async () => await DBus.GetSubjectByParam(SearchText.Trim(), IsASC)).Result);
         }
 
         public JournalPageViewModel() { }   
