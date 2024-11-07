@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DBusCS.utils;
 using CommunityToolkit.Mvvm.Input;
 using Avalonia.Media;
 using Tmds.DBus.Protocol;
+using DynamicData.Binding;
 
 namespace DBusCS.ViewModels
 {
@@ -23,6 +25,39 @@ namespace DBusCS.ViewModels
         };
         private static string[] _student = { "Журнал" };
 
+        private ObservableCollection<string> _headerList  = new ObservableCollection<string>();
+        private ObservableCollection<string> _comporList = new ObservableCollection<string> {
+            "=",
+            "!=",
+            "<",
+            ">"
+        };
+
+        private string _selHeader = "";
+        public string SelHeader
+        {
+            get => _selHeader;
+            set => this.RaiseAndSetIfChanged(ref _selHeader, value);
+        }
+
+        private string _selCompor = "=";
+        public string SelCompor
+        {
+            get => _selCompor;
+            set => this.RaiseAndSetIfChanged(ref _selCompor, value);
+        }
+
+        public ObservableCollection<string> HeaderList
+        {
+            get => _headerList;
+            set => this.RaiseAndSetIfChanged(ref _headerList, value);
+        }
+        public ObservableCollection<string> ComporList
+        {
+            get => _comporList;
+        }
+
+
         public delegate void Refresh(string flag);
         public event Refresh OnRefresh;
 
@@ -34,6 +69,20 @@ namespace DBusCS.ViewModels
 
         public delegate void UpdateDelegate (Dictionary<string, object> deleteInfo);
         public event UpdateDelegate OnUpdate;
+
+        private ObservableCollection<string> _filterList = new ObservableCollection<string>();
+        public ObservableCollection<string> FilterList
+        {
+            get => _filterList;
+            set => this.RaiseAndSetIfChanged(ref _filterList, value);
+        }
+
+        private string _selFilter;
+        public string SelFilter
+        {
+            get => _selFilter;
+            set => this.RaiseAndSetIfChanged(ref _selFilter, value);
+        }
 
         private string _id;
         public string ID 
@@ -89,6 +138,13 @@ namespace DBusCS.ViewModels
             set => this.RaiseAndSetIfChanged(ref _searchText, value);
         }
 
+        private int _filterText;
+        public int FilterText
+        {
+            get => _filterText;
+            set => this.RaiseAndSetIfChanged(ref _filterText, value);
+        }
+
         private bool _isNotJournal = false;
         public bool IsNotJournal
         {
@@ -131,6 +187,46 @@ namespace DBusCS.ViewModels
         public ICommand DeleteStudentEv => new RelayCommand(_DeleteEvent);
         public ICommand UpdateData => new RelayCommand(_UpdateData);
         public ICommand SearchData => new RelayCommand(_SearchData);
+        public ICommand AddFilter => new RelayCommand(_AddFilter);
+        public ICommand DelFilter => new RelayCommand(_DelFilter);
+        public ICommand DelAllFilter => new RelayCommand(_DelAllFilter);
+
+        private void _DelFilter()
+        {
+            if (SelFilter != null)
+            {
+                Message = "";
+                FilterList.Remove(SelFilter);
+                FilterList = new ObservableCollection<string>(FilterList);
+            }
+            else Message = "Фильтр не выбран!";
+        }
+
+        private void _DelAllFilter()
+        {
+            FilterList = new ObservableCollection<string>();
+        }
+
+        private void _AddFilter()
+        {
+            var filterList = FilterList;
+            var filterStr = SelHeader + " " + SelCompor + " " + FilterText.ToString();
+            bool CrF = false;
+            foreach(var str in filterList)
+            {
+                var strSplit = str.Split();
+                if (SelHeader == strSplit[0])
+                {
+                    CrF = true;
+                    break;
+                }
+            }
+            if (!CrF)
+            {
+                filterList.Add(filterStr);
+                FilterList = new ObservableCollection<string>(filterList);
+            }
+        }
 
         public void RefreshPage()
         {
@@ -173,6 +269,7 @@ namespace DBusCS.ViewModels
                         var parsSub = grade.Trim().Split(":");
                         subjects.Add(new Subject(Guid.Parse(parsSub[0]), parsSub[1], Int32.Parse(parsSub[2])));
                     }
+                    subjects.Sort((sub1, sub2) => sub1.SubjectName.CompareTo(sub2.SubjectName));
                 }
                 students.Add(new Student(Guid.Parse(studentInf[0]), studentInf[1], studentInf[2], studentInf[3], subjects));
             }
@@ -231,7 +328,16 @@ namespace DBusCS.ViewModels
 
         private void _SearchData()
         {
-            if (SelectedItem != "Предметы") _GetStudent(Task.Run(async () => await DBus.GetStudentByParam(SearchText.Trim(), IsASC)).Result);
+            if (SelectedItem != "Предметы") {
+                var paramStr = SearchText.Trim();
+                if (FilterList.Count != 0)
+                {
+                    foreach(string filter in FilterList){
+                        paramStr += ":" + filter;
+                    }
+                }
+                _GetStudent(Task.Run(async () => await DBus.GetStudentByParam(paramStr, IsASC)).Result);
+            }
             else _GetSubject(Task.Run(async () => await DBus.GetSubjectByParam(SearchText.Trim(), IsASC)).Result);
         }
 

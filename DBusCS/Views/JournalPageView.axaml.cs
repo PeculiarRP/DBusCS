@@ -7,6 +7,9 @@ using Avalonia.Interactivity;
 using System.ComponentModel;
 using System;
 using System.Diagnostics;
+using DynamicData;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DBusCS.Views;
 
@@ -48,6 +51,7 @@ public partial class JournalPageView : UserControl
             }
             else
             {
+                List<string> tmpList = new List<string>(); 
                 searchBox.Watermark = "¬ведите фамилию студента";
                 Student student = (Student) objectList[0];
                 for(int i = 0; i < objectList.Count; i++)
@@ -95,7 +99,10 @@ public partial class JournalPageView : UserControl
                             Binding = new Avalonia.Data.Binding($"Grades[{i}].Grade"),
                             Width = (i - 1) == student.Grades.Count ? new DataGridLength(1, DataGridLengthUnitType.Star) : new DataGridLength(0.3, DataGridLengthUnitType.Star)
                         });
+                        tmpList.Add(student.Grades[i].SubjectName);
                     }
+                    viewModel.HeaderList = new ObservableCollection<string>(tmpList);
+                    viewModel.SelHeader = tmpList[0];
                 }
             }
         }

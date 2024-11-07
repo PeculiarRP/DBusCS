@@ -7,6 +7,21 @@ namespace DBusCS.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
+        private int _pageWidth = 600;
+        public int PageWidth
+        {
+            get => _pageWidth;
+            set => this.RaiseAndSetIfChanged(ref _pageWidth, value);
+        }
+
+        private int _pageHeight = 450;
+
+        public int PageHeight
+        {
+            get => _pageHeight;
+            set => this.RaiseAndSetIfChanged(ref _pageHeight, value);
+        }
+
         private void _BackToAuth()
         {
             CurrentPage = pages[0];
@@ -18,6 +33,8 @@ namespace DBusCS.ViewModels
         }
 
         private void _AuthComl(User user) {
+            PageWidth = 900;
+            PageHeight = 900;
             CurrentPage = pages[1];
             ((JournalPageViewModel)pages[1]).ID = user.ToString();
         }
@@ -39,12 +56,16 @@ namespace DBusCS.ViewModels
 
         private void _BackToJournal() 
         {
+            PageWidth = 900;
+            PageHeight = 900;
             CurrentPage = pages[1];
             ((JournalPageViewModel)pages[1]).RefreshPage();
         }
 
         private void _DeleteEvent(Dictionary<string, object> deleteInfo)
         {
+            PageWidth = 600;
+            PageHeight = 450;
             CurrentPage = pages[3];
             if (deleteInfo.ContainsKey("предмет"))
             {
@@ -62,6 +83,8 @@ namespace DBusCS.ViewModels
 
         private void _UpdateEvent(Dictionary<string, object> updateInfo)
         {
+            PageWidth = 900;
+            PageHeight = 900;
             if (updateInfo.ContainsKey("предмет"))
             {
                 CurrentPage = pages[5];

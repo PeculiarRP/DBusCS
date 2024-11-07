@@ -43,6 +43,8 @@ namespace DBusCS.utils
             return SubjectName + " " + Grade;
         }
 
+
+
         public Subject(Guid id, string name)
         {
             Id = id;
